@@ -40,9 +40,9 @@ public class DbService : IDbService
             SELECT c.firstName,c.lastName, c.dateOfBirth
             FROM Customer c", conn);
             using var readerC = await cmdC.ExecuteReaderAsync();
-            List<CustomerDTO> cus = new List<CustomerDTO>();
-            List<DriverDTO> dr = new List<DriverDTO>();
-            List<ProductDto> pd = new List<ProductDto>();
+            List<CustomerDTO> idCustomerList = new List<CustomerDTO>();
+            List<DriverDTO> idDriverList = new List<DriverDTO>();
+            List<ProductDto> idProductList = new List<ProductDto>();
             //TODO nie zdazylem dokonczyc dodawanie list tych obiektow, prosze wziac to pod uwage przy wystawianiu punktow
             if (!tripDict.TryGetValue(userId, out var delivery_id))
             {

@@ -15,7 +15,7 @@ public class DbService : IDbService
     
     public async Task<List<MergeDTO>> GetDeliveries(int userId)
     {
-        var trips = new List<MergeDTO>();
+        var lista = new List<MergeDTO>();
         using var conn = new SqlConnection(_connectionString);
         await conn.OpenAsync();
 
@@ -27,7 +27,7 @@ public class DbService : IDbService
             JOIN Product_Delivery pd ON de.delivery_id = pd.delivery_id ", conn);
 
         using var reader = await cmd.ExecuteReaderAsync();
-        var tripDict = new Dictionary<int, MergeDTO>();
+        var listDict = new Dictionary<int, MergeDTO>();
 
         while (await reader.ReadAsync())
         {
@@ -44,15 +44,15 @@ public class DbService : IDbService
             List<DriverDTO> idDriverList = new List<DriverDTO>();
             List<ProductDto> idProductList = new List<ProductDto>();
             //TODO nie zdazylem dokonczyc dodawanie list tych obiektow, prosze wziac to pod uwage przy wystawianiu punktow
-            if (!tripDict.TryGetValue(userId, out var delivery_id))
+            if (!listDict.TryGetValue(userId, out var delivery_id))
             {
                 delivery_id = new MergeDTO { date = date  };
-                tripDict[userId] = delivery_id;
+                listDict[userId] = delivery_id;
             }
             //delivery_id.productInfo.Add(new ProductDto() { Product_Id = new List<pd>() });
         }
 
-        return tripDict.Values.ToList();
+        return listDict.Values.ToList();
     }
     
     public async Task<int?> AddDelivery(PostDTO client)

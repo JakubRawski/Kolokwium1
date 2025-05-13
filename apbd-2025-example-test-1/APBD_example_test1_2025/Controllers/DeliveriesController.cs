@@ -16,17 +16,17 @@ namespace APBD_example_test1_2025.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTripsForClient(int id)
         {
-            var trips = await _service.GetDeliveries(id);
-            if (trips.Count == 0)
+            var dev = await _service.GetDeliveries(id);
+            if (dev.Count == 0)
             {
                 return NotFound("Brak danego ID.");
             }
-            return Ok(trips);
+            return Ok(dev);
         }
         [HttpPost]
-        public async Task<IActionResult> AddClient([FromBody] PostDTO client)
+        public async Task<IActionResult> AddDelivery([FromBody] PostDTO client)
         {
-            var id = await _service.AddProduct(client);
+            var id = await _service.AddDelivery(client);
             if (id == null)
             {
                 return BadRequest("Nieprawidłowe dane wejściowe.");

@@ -7,22 +7,6 @@ public class ProductDto
     public decimal Price { get; set; }
 }
 
-public class ProductDeliveryDto
-{
-    public int Product_Id { get; set; } 
-    public int Delivery_Id { get; set; }
-    public int Amount { get; set; }
-
-}
-
-public class DeliveryDto
-{
-    public int Delivery_Id { get; set; }
-    public int Costomer_Id { get; set; }
-    public int Driver_Id { get; set; }
-    
-
-}
 
 public class DriverDTO
 {

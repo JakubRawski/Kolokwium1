@@ -36,13 +36,17 @@ public class DbService : IDbService
             int idDriver = reader.GetInt32(2);
             int idProduct = reader.GetInt32(3);
             
+            var cmdC = new SqlCommand(@"
+            SELECT c.firstName,c.lastName, c.dateOfBirth
+            FROM Customer c", conn);
+            using var readerC = await cmdC.ExecuteReaderAsync();
             List<CustomerDTO> cus = new List<CustomerDTO>();
             List<DriverDTO> dr = new List<DriverDTO>();
             List<ProductDto> pd = new List<ProductDto>();
-            
+            //TODO nie zdazylem dokonczyc dodawanie list tych obiektow, prosze wziac to pod uwage przy wystawianiu punktow
             if (!tripDict.TryGetValue(userId, out var delivery_id))
             {
-                delivery_id = new MergeDTO { date = date /*driveInfo = new List<idDriver>()*/ };
+                delivery_id = new MergeDTO { date = date  };
                 tripDict[userId] = delivery_id;
             }
             //delivery_id.productInfo.Add(new ProductDto() { Product_Id = new List<pd>() });
@@ -51,7 +55,7 @@ public class DbService : IDbService
         return tripDict.Values.ToList();
     }
     
-    public async Task<int?> AddProduct(PostDTO client)
+    public async Task<int?> AddDelivery(PostDTO client)
     {
         if (int.IsNegative(client.delivery_Id) ||
             int.IsNegative(client.customer_id) ||
@@ -63,11 +67,12 @@ public class DbService : IDbService
 
         var cmd = new SqlCommand(@"
             INSERT INTO Delivery (delivery_id, customer_id, driver_id, date)
-            OUTPUT INSERTED.IdClient
             VALUES (@Delivery, @Customer, @Driver, GETDATE())", conn);
         cmd.Parameters.AddWithValue("@Delivery", client.delivery_Id);
         cmd.Parameters.AddWithValue("@Customer", client.customer_id);
         cmd.Parameters.AddWithValue("@Driver", client.license_number);
+        //TODO nie zdazylem dokonczyc dodawanie productow i ich walidacje, prosze wziac to pod uwage przy wystawianiu punktow
+
 
         return (int?)await cmd.ExecuteScalarAsync();
     }
